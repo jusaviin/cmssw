@@ -1493,8 +1493,8 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
       auto cs = new fastjet::ClusterSequence(candidates, WTAjtDef);
       std::vector<fastjet::PseudoJet> wtajt = fastjet::sorted_by_pt(cs->inclusive_jets(0));
 
-      jets_.WTAeta[jets_.nref] = wtajt[0].eta();
-      jets_.WTAphi[jets_.nref] = wtajt[0].phi_std();
+      jets_.WTAeta[jets_.nref] = (wtajt.size() > 0) ? wtajt[0].eta() : -999;
+      jets_.WTAphi[jets_.nref] = (wtajt.size() > 0) ? wtajt[0].phi_std() : -999;
       delete cs;
     }
     //------------------------------------------------------------------
@@ -1908,8 +1908,8 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
         auto cs = new fastjet::ClusterSequence(candidates, WTAjtDef);
         std::vector<fastjet::PseudoJet> wtajt = fastjet::sorted_by_pt(cs->inclusive_jets(0));
 
-        jets_.WTAgeneta[jets_.ngen] = wtajt[0].eta();
-        jets_.WTAgenphi[jets_.ngen] = wtajt[0].phi_std();
+        jets_.WTAgeneta[jets_.ngen] = (wtajt.size() > 0) ? wtajt[0].eta() : -999;
+        jets_.WTAgenphi[jets_.ngen] =  (wtajt.size() > 0) ? wtajt[0].phi_std() : -999;
         delete cs;
       }
       //-------------------------------------------------
