@@ -707,8 +707,8 @@ HiInclusiveJetAnalyzer::beginJob() {
       //for reWTA reclustering
       // disable for calo jets
       if(doWTARecluster_ && !(jetName_.find("Calo") != std::string::npos)){
-        t->Branch("WTAgeneta",jets_.WTAgeneta,"WTAgeneta[nref]/F");
-        t->Branch("WTAgenphi",jets_.WTAgenphi,"WTAgenphi[nref]/F");
+        t->Branch("WTAgeneta",jets_.WTAgeneta,"WTAgeneta[ngen]/F");
+        t->Branch("WTAgenphi",jets_.WTAgenphi,"WTAgenphi[ngen]/F");
       }
 
       if(doNewJetVars_){
