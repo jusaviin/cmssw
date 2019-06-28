@@ -702,8 +702,8 @@ HiInclusiveJetAnalyzer::beginJob() {
 
       //for reWTA reclustering
       if(doWTARecluster_){
-        t->Branch("WTAgeneta",jets_.WTAgeneta,"WTAgeneta[nref]/F");
-        t->Branch("WTAgenphi",jets_.WTAgenphi,"WTAgenphi[nref]/F");
+        t->Branch("WTAgeneta",jets_.WTAgeneta,"WTAgeneta[ngen]/F");
+        t->Branch("WTAgenphi",jets_.WTAgenphi,"WTAgenphi[ngen]/F");
       }
 
       if(doNewJetVars_){
