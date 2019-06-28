@@ -76,7 +76,7 @@ private:
 
   // for reWTA reclustering-----------------------
   bool doWTARecluster_ = false;
-  fastjet::JetDefinition WTAjtDef = fastjet::JetDefinition(fastjet::JetAlgorithm::antikt_algorithm, 1, fastjet::WTA_pt_scheme);
+  fastjet::JetDefinition WTAjtDef = fastjet::JetDefinition(fastjet::JetAlgorithm::antikt_algorithm, 2, fastjet::WTA_pt_scheme);
   //--------------------------------------------
 
   int getPFJetMuon(const pat::Jet& pfJet, const reco::PFCandidateCollection *pfCandidateColl);
