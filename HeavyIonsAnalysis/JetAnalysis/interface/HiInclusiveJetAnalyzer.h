@@ -74,6 +74,11 @@ public:
 
 private:
 
+  // for reWTA reclustering-----------------------
+  bool doWTARecluster_ = false;
+  fastjet::JetDefinition WTAjtDef = fastjet::JetDefinition(fastjet::JetAlgorithm::antikt_algorithm, 1, fastjet::WTA_pt_scheme);
+  //--------------------------------------------
+
   int getPFJetMuon(const pat::Jet& pfJet, const reco::PFCandidateCollection *pfCandidateColl);
 
   double getPtRel(const reco::PFCandidate lep, const pat::Jet& jet );
@@ -232,6 +237,13 @@ private:
     float jtpt[MAXJETS];
     float jteta[MAXJETS];
     float jtphi[MAXJETS];
+
+    //reWTA reclusted jet axis
+    float WTAeta[MAXJETS];
+    float WTAphi[MAXJETS];
+    float WTAgeneta[MAXJETS];
+    float WTAgenphi[MAXJETS];
+
     float jty[MAXJETS];
     float jtpu[MAXJETS];
     float jtm[MAXJETS];
