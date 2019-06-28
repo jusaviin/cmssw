@@ -1495,7 +1495,6 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 
       jets_.WTAeta[jets_.nref] = wtajt[0].eta();
       jets_.WTAphi[jets_.nref] = wtajt[0].phi_std();
-      wtajt.clear();
       delete cs;
     }
     //------------------------------------------------------------------
@@ -1911,7 +1910,6 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 
         jets_.WTAgeneta[jets_.ngen] = wtajt[0].eta();
         jets_.WTAgenphi[jets_.ngen] = wtajt[0].phi_std();
-        wtajt.clear();
         delete cs;
       }
       //-------------------------------------------------
