@@ -15,5 +15,6 @@ hiEvtAnalyzer = cms.EDAnalyzer('HiEvtAnalyzer',
    doMC             = cms.bool(False),
    doHiMC           = cms.bool(False),
    useHepMC         = cms.bool(False),
+   doHFfilters      = cms.bool(True),
    evtPlaneLevel    = cms.int32(0)
 )

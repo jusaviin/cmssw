@@ -70,6 +70,7 @@ private:
 
   bool doMC_;
   bool doHiMC_;
+  bool doHFfilters_;
   bool useHepMC_;
   bool doVertex_;
 
@@ -157,6 +158,7 @@ HiEvtAnalyzer::HiEvtAnalyzer(const edm::ParameterSet& iConfig)
       doCentrality_(iConfig.getParameter<bool>("doCentrality")),
       doMC_(iConfig.getParameter<bool>("doMC")),
       doHiMC_(iConfig.getParameter<bool>("doHiMC")),
+      doHFfilters_(iConfig.getParameter<bool>("doHFfilters")),
       useHepMC_(iConfig.getParameter<bool>("useHepMC")),
       doVertex_(iConfig.getParameter<bool>("doVertex")),
       evtPlaneLevel_(iConfig.getParameter<int>("evtPlaneLevel")) {}
@@ -334,8 +336,8 @@ void HiEvtAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     vz = vertex->begin()->z();
   }
 
-  // No HF filter info for ppref
-  if(doHiMC_){
+  // Option to disable HF filters for ppref
+  if(doHFfilters_){
     edm::Handle<reco::HFFilterInfo> HFfilter;
     iEvent.getByToken(HFfilters_, HFfilter);
 

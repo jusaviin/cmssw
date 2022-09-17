@@ -83,6 +83,7 @@ process.hiEvtAnalyzer.doEvtPlane = cms.bool(False)
 process.hiEvtAnalyzer.doEvtPlaneFlat = cms.bool(False)
 process.hiEvtAnalyzer.doMC = cms.bool(True) # general MC info
 process.hiEvtAnalyzer.doHiMC = cms.bool(False) # HI specific MC info
+process.hiEvtAnalyzer.doHFfilters = cms.bool(False) # Disable HF filters for ppRef
 
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cfi')
 process.load('HeavyIonsAnalysis.EventAnalysis.hltobject_cfi')
