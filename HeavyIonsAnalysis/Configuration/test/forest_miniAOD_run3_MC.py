@@ -10,7 +10,7 @@ process = cms.Process('HiForest', Run3_pp_on_PbPb)
 
 # HiForest info
 process.load("HeavyIonsAnalysis.EventAnalysis.HiForestInfo_cfi")
-process.HiForestInfo.info = cms.vstring("HiForest, miniAOD, 122X, mc")
+process.HiForestInfo.info = cms.vstring("HiForest, miniAOD, 125X, mc")
 
 ###############################################################################
 
@@ -123,7 +123,6 @@ process.forest = cms.Path(
     process.hiEvtAnalyzer +
     process.HiGenParticleAna +
     process.correctedElectrons +
-    process.akCs4PFJetAnalyzer +
     process.ggHiNtuplizer +
     process.unpackedMuons +
     process.muonAnalyzer
