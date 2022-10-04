@@ -44,7 +44,8 @@ private:
   int L1EvtCnt;
   int* hltflag;
   int* l1flag;
-  int* hltPrescl;
+  int* hltPrescaleNumerator;
+  int* hltPrescaleDenominator;
   int* l1Prescl;
 
   std::string processName_;
@@ -74,7 +75,8 @@ TriggerAnalyzer::TriggerAnalyzer(edm::ParameterSet const& conf)
       L1EvtCnt(0),
       hltflag(new int[kMaxHLTFlag]),
       l1flag(new int[kMaxL1Flag]),
-      hltPrescl(new int[kMaxHLTFlag]),
+      hltPrescaleNumerator(new int[kMaxHLTFlag]),
+      hltPrescaleDenominator(new int[kMaxHLTFlag]),
       l1Prescl(new int[kMaxL1Flag]),
       processName_(conf.getParameter<std::string>("HLTProcessName")),
       hltdummies(conf.getParameter<std::vector<std::string>>("hltdummybranches")),
@@ -98,7 +100,8 @@ TriggerAnalyzer::TriggerAnalyzer(edm::ParameterSet const& conf)
 TriggerAnalyzer::~TriggerAnalyzer() {
   delete[] hltflag;
   delete[] l1flag;
-  delete[] hltPrescl;
+  delete[] hltPrescaleNumerator;
+  delete[] hltPrescaleDenominator;
   delete[] l1Prescl;
 }
 
@@ -119,7 +122,8 @@ void TriggerAnalyzer::analyze(edm::Event const& iEvent, edm::EventSetup const& i
     /* reset accept status to -1 */
     for (int i = 0; i < kMaxHLTFlag; ++i) {
       hltflag[i] = -1;
-      hltPrescl[i] = -1;
+      hltPrescaleNumerator[i] = -1;
+      hltPrescaleDenominator[i] = -1;
     }
 
     int ntrigs = hltresults->size();
@@ -135,7 +139,8 @@ void TriggerAnalyzer::analyze(edm::Event const& iEvent, edm::EventSetup const& i
       for (auto const& dummy : hltdummies) {
         TString dummyname(dummy.data());
         t_->Branch(dummyname, hltflag + itdum, dummyname + "/I");
-        t_->Branch(dummyname + "_Prescl", hltPrescl + itdum, dummyname + "_Prescl/I");
+        t_->Branch(dummyname + "_PrescaleNumerator", hltPrescaleNumerator + itdum, dummyname + "_PrescaleNumerator/I");
+        t_->Branch(dummyname + "_PrescaleDenominator", hltPrescaleDenominator + itdum, dummyname + "_PrescaleDenominator/I");
         pathtoindex[dummy] = itdum;
         ++itdum;
       }
@@ -145,7 +150,8 @@ void TriggerAnalyzer::analyze(edm::Event const& iEvent, edm::EventSetup const& i
         if (pathtoindex.find(trigname) == pathtoindex.end()) {
           TString hltname = trigname;
           t_->Branch(hltname, hltflag + itdum + itrig, hltname + "/I");
-          t_->Branch(hltname + "_Prescl", hltPrescl + itdum + itrig, hltname + "_Prescl/I");
+          t_->Branch(hltname + "_PrescaleNumerator", hltPrescaleNumerator + itdum + itrig, hltname + "_PrescaleNumerator/I");
+          t_->Branch(hltname + "_PrescaleDenominator", hltPrescaleDenominator + itdum + itrig, hltname + "_PrescaleDenominator/I");
           pathtoindex[trigname] = itdum + itrig;
         }
       }
@@ -154,12 +160,15 @@ void TriggerAnalyzer::analyze(edm::Event const& iEvent, edm::EventSetup const& i
     }
     // ...Fill the corresponding accepts in branch-variables
 
+    FractionalPrescale thisTriggerPrescale;
     for (int itrig = 0; itrig != ntrigs; ++itrig) {
       const std::string& trigname = triggerNames.triggerName(itrig);
       bool accept = hltresults->accept(itrig);
 
       int index = pathtoindex[trigname];
-      hltPrescl[index] = hltPrescaleProvider_->prescaleValue(iEvent, iSetup, trigname);
+      thisTriggerPrescale = hltPrescaleProvider_->prescaleValue<FractionalPrescale>(iEvent, iSetup, trigname);
+      hltPrescaleNumerator[index] = thisTriggerPrescale.numerator();
+      hltPrescaleDenominator[index] = thisTriggerPrescale.denominator();
 
       hltflag[index] = accept;
     }
