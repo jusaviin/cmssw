@@ -15,7 +15,7 @@ def addToSequence(label, module, process, sequence):
     setattr(process, label, module)
     sequence += getattr(process, label)
 
-def setupHeavyIonJets(tag, sequence, process, isMC, radius = -1, JECTag = 'None'):
+def setupHeavyIonJets(tag, sequence, process, isMC, radius = -1, JECTag = 'None', doFlow = False):
 
     if radius < 0:
        radiustag = get_radius(tag)
@@ -24,7 +24,7 @@ def setupHeavyIonJets(tag, sequence, process, isMC, radius = -1, JECTag = 'None'
        radiustag = get_radius(tag)
 
     addToSequence( tag+'Jets',
-                   akCs4PFJets.clone(rParam = radius, src = 'packedPFCandidates', useModulatedRho = False),
+                   akCs4PFJets.clone(rParam = radius, src = 'packedPFCandidates', useModulatedRho = doFlow),
                    process, sequence)
 
     if JECTag == 'None':
