@@ -19,7 +19,7 @@ process.HiForestInfo.info = cms.vstring("HiForest, miniAOD, 125X, mc")
 process.source = cms.Source("PoolSource",
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
     fileNames = cms.untracked.vstring(
-        '/store/himc/HINPbPbSpring21MiniAOD/DiJet_pThat-15_TuneCP5_HydjetDrumMB_5p02TeV_Pythia8/MINIAODSIM/FixL1CaloGT_New_Release_112X_upgrade2018_realistic_HI_v9-v1/2520000/00147e49-765a-424c-a7e0-29860f11847d.root'
+        'root://cmsxrootd.fnal.gov//store/himc/HINPbPbSpring21MiniAOD/DiJet_pThat-15_TuneCP5_HydjetDrumMB_5p02TeV_Pythia8/MINIAODSIM/FixL1CaloGT_New_Release_112X_upgrade2018_realistic_HI_v9-v1/2520000/00147e49-765a-424c-a7e0-29860f11847d.root'
     ),
 )
 
@@ -74,8 +74,8 @@ process.TFileService = cms.Service("TFileService",
 #############################
 process.load('HeavyIonsAnalysis.EventAnalysis.HiGenAnalyzer_cfi')
 # making cuts looser so that we can actually check dNdEta
-process.HiGenParticleAna.ptMin = cms.untracked.double(0.4) # default is 5
-process.HiGenParticleAna.etaMax = cms.untracked.double(5.) # default is 2.5
+process.HiGenParticleAna.ptMin = cms.untracked.double(0.7) # default is 5
+process.HiGenParticleAna.etaMax = cms.untracked.double(2.4) # default is 2.5
 
 # event analysis
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cfi')
@@ -84,6 +84,9 @@ process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_mc_cfi')
 process.load('HeavyIonsAnalysis.EventAnalysis.skimanalysis_cfi')
 process.load('HeavyIonsAnalysis.EventAnalysis.hltobject_cfi')
 process.load('HeavyIonsAnalysis.EventAnalysis.l1object_cfi')
+
+process.particleFlowAnalyser.ptMin = 1.0 # default is 5
+process.particleFlowAnalyser.absEtaMax = 2.4 # default is 5
 
 from HeavyIonsAnalysis.EventAnalysis.hltobject_cfi import trigger_list_mc
 process.hltobject.triggerNames = trigger_list_mc
@@ -106,6 +109,8 @@ process.load('HeavyIonsAnalysis.JetAnalysis.akCs4PFJetSequence_pponPbPb_mc_cff')
 ################################
 # tracks
 process.load("HeavyIonsAnalysis.TrackAnalysis.TrackAnalyzers_cff")
+process.PbPbTracks.trackPtMin = 0.7
+
 #muons
 #process.load("HeavyIonsAnalysis.MuonAnalysis.unpackedMuons_cfi")
 #process.load("HeavyIonsAnalysis.MuonAnalysis.muonAnalyzer_cfi")
@@ -121,13 +126,13 @@ process.forest = cms.Path(
     process.HiForestInfo +
     process.hltanalysis +
     #process.hltobject +
-    process.l1object +
+    #process.l1object +
     process.trackSequencePbPb +
     process.particleFlowAnalyser +
     process.hiEvtAnalyzer +
-    process.HiGenParticleAna +
-    process.correctedElectrons +
-    process.ggHiNtuplizer #+
+    process.HiGenParticleAna #+
+    #process.correctedElectrons +
+    #process.ggHiNtuplizer #+
     #process.unpackedMuons +
     #process.muonAnalyzer
     )
@@ -135,29 +140,52 @@ process.forest = cms.Path(
 #customisation
 
 addR3Jets = False
+addR3FlowJets = False
 addR4Jets = True
+addR4FlowJets = True
 
-if addR3Jets or addR4Jets :
+if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
     process.load("HeavyIonsAnalysis.JetAnalysis.extraJets_cff")
     from HeavyIonsAnalysis.JetAnalysis.clusterJetsFromMiniAOD_cff import setupHeavyIonJets
 
     if addR3Jets :
         process.jetsR3 = cms.Sequence()
-        setupHeavyIonJets('akCs3PF', process.jetsR3, process, isMC = 1, radius = 0.30, JECTag = 'AK3PF')
+        setupHeavyIonJets('akCs3PF', process.jetsR3, process, isMC = 1, radius = 0.30, JECTag = 'AK3PF', doFlow = False)
         process.akCs3PFpatJetCorrFactors.levels = ['L2Relative', 'L3Absolute']
         process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
         process.akCs3PFJetAnalyzer = process.akCs4PFJetAnalyzer.clone(jetTag = "akCs3PFpatJets", jetName = 'akCs3PF', genjetTag = "ak3GenJetsNoNu")      
         process.forest += process.extraJetsMC * process.jetsR3 * process.akCs3PFJetAnalyzer
 
+    if addR3FlowJets :
+        process.jetsR3flow = cms.Sequence()
+        setupHeavyIonJets('akCs3PFFlow', process.jetsR3flow, process, isMC = 1, radius = 0.30, JECTag = 'AK3PF', doFlow = True)
+        process.akCs3PFFlowpatJetCorrFactors.levels = ['L2Relative', 'L3Absolute']
+        process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
+        process.akFlowPuCs3PFJetAnalyzer = process.akCs4PFJetAnalyzer.clone(jetTag = "akCs3PFFlowpatJets", jetName = 'akCs3PFFlow', genjetTag = "ak3GenJetsNoNu")
+        process.forest += process.extraFlowJetsMC * process.jetsR3flow * process.akFlowPuCs3PFJetAnalyzer
+
     if addR4Jets :
         # Recluster using an alias "0" in order not to get mixed up with the default AK4 collections
         process.jetsR4 = cms.Sequence()
-        setupHeavyIonJets('akCs0PF', process.jetsR4, process, isMC = 1, radius = 0.40, JECTag = 'AK4PF')
+        setupHeavyIonJets('akCs0PF', process.jetsR4, process, isMC = 1, radius = 0.40, JECTag = 'AK4PF', doFlow = False)
         process.akCs0PFpatJetCorrFactors.levels = ['L2Relative', 'L3Absolute']
         process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
         process.akCs4PFJetAnalyzer.jetTag = 'akCs0PFpatJets'
         process.akCs4PFJetAnalyzer.jetName = 'akCs0PF'
+        process.akCs4PFJetAnalyzer.jetPtMin = 20
+        process.akCs4PFJetAnalyzer.doWTARecluster = True
         process.forest += process.extraJetsMC * process.jetsR4 * process.akCs4PFJetAnalyzer
+
+    if addR4FlowJets :
+        process.jetsR4flow = cms.Sequence()
+        setupHeavyIonJets('akCs4PFFlow', process.jetsR4flow, process, isMC = 1, radius = 0.40, JECTag = 'AK4PF', doFlow = True)
+        process.akCs4PFFlowpatJetCorrFactors.levels = ['L2Relative', 'L3Absolute']
+        process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
+        process.akFlowPuCs4PFJetAnalyzer.jetTag = 'akCs4PFFlowpatJets'
+        process.akFlowPuCs4PFJetAnalyzer.jetName = 'akCs4PFFlow'
+        process.akFlowPuCs4PFJetAnalyzer.jetPtMin = 20
+        process.akFlowPuCs4PFJetAnalyzer.doWTARecluster = True
+        process.forest += process.extraFlowJetsMC * process.jetsR4flow * process.akFlowPuCs4PFJetAnalyzer
 
 
 
@@ -195,4 +223,6 @@ if addCandidateTagging:
 process.load('HeavyIonsAnalysis.EventAnalysis.collisionEventSelection_cff')
 process.pclusterCompatibilityFilter = cms.Path(process.clusterCompatibilityFilter)
 process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter)
+process.load('HeavyIonsAnalysis.EventAnalysis.hffilter_cfi')
+process.pphfCoincFilter2Th4 = cms.Path(process.phfCoincFilter2Th4)
 process.pAna = cms.EndPath(process.skimanalysis)

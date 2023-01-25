@@ -15,3 +15,4 @@ akCs4PFJetAnalyzer = inclusiveJetAnalyzer.clone(
     hltTrgResults = cms.untracked.string('TriggerResults::'+'HISIGNAL'),
     )
 
+akFlowPuCs4PFJetAnalyzer = akCs4PFJetAnalyzer.clone()
