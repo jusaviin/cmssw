@@ -71,7 +71,7 @@ process.GlobalTag.toGet.extend([
 
 # root output
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("HiForestMiniAOD.root"))
+    fileName = cms.string("HiForestMiniAOD_PbPbData2018.root"))
 
 # # edm output for debugging purposes
 # process.output = cms.OutputModule(
@@ -195,6 +195,7 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.akCs4PFJetAnalyzer.jetTag = 'akCs0PFpatJets'
         process.akCs4PFJetAnalyzer.jetName = 'akCs0PF'
         process.akCs4PFJetAnalyzer.jetPtMin = 20
+        process.akCs4PFJetAnalyzer.doHiJetID = True
         process.akCs4PFJetAnalyzer.doWTARecluster = True
         process.forest += process.extraJetsData * process.jetsR4 * process.akCs4PFJetAnalyzer
  
@@ -206,6 +207,7 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.akFlowPuCs4PFJetAnalyzer.jetTag = 'akCs4PFFlowpatJets'
         process.akFlowPuCs4PFJetAnalyzer.jetName = 'akCs4PFFlow'
         process.akFlowPuCs4PFJetAnalyzer.jetPtMin = 20
+        process.akFlowPuCs4PFJetAnalyzer.doHiJetID = True
         process.akFlowPuCs4PFJetAnalyzer.doWTARecluster = True
         process.forest += process.extraFlowJetsData * process.jetsR4flow * process.akFlowPuCs4PFJetAnalyzer
 
