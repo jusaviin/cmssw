@@ -2,6 +2,9 @@
 #include <iostream>  // Input/output stream. Needed for cout.
 #include <vector>
 
+// CMSSW includes
+#include "FWCore/ParameterSet/interface/FileInPath.h"
+
 // Root includes
 #include "TFile.h"
 #include "TString.h"
@@ -632,7 +635,7 @@ void jetHtPlotter(std::string configurationFileName) {
   // ===============================================
 
   // Luminosity per run file
-  const char *iovAndLumiFile = configurationGiver->lumiPerIovFile();
+  edm::FileInPath iovAndLumiFile = edm::FileInPath(configurationGiver->lumiPerIovFile());
   const char *iovListMode = configurationGiver->iovListMode();
 
   // Create a vector for a new iovList
@@ -642,7 +645,7 @@ void jetHtPlotter(std::string configurationFileName) {
   std::vector<TString> iovNames;
   std::vector<TString> iovLegend;
 
-  std::tie(iovVector, lumiPerIov, iovNames, iovLegend) = runAndLumiLists(iovAndLumiFile, iovListMode);
+  std::tie(iovVector, lumiPerIov, iovNames, iovLegend) = runAndLumiLists(iovAndLumiFile.fullPath().c_str(), iovListMode);
 
   // For the IOV legend, remove the two last entries and replace them with user defined names
   iovLegend.pop_back();
