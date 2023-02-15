@@ -34,18 +34,98 @@ def setupHeavyIonJets(tag, sequence, process, isMC, radius = -1, JECTag = 'None'
                    patJetCorrFactors.clone(payload = JECTag, src = tag+'Jets'),
                    process, sequence)
 
+    # If we want to have parton flavor identification in MC, we need non-CS subtracted jets for which the procedure works
+    # Testing the implementation here
+
     if isMC :
-        addToSequence( tag+'patJetPartonMatch',
-                       patJetPartonMatch.clone(maxDeltaR = radius,
-                          matched = 'hiSignalGenParticles',
-                          src = tag+'Jets'),
-                       process, sequence)
 
         genjetcollection = 'ak'+str(radiustag)+'GenJetsNoNu'
 
         addToSequence( genjetcollection,
                        ak4GenJetsNoNu.clone(src = 'packedGenParticlesSignal', rParam = radius),
                        process, sequence)
+
+        unsubtractedJetTag = "ak4PFMatchingFor" + tag
+
+        addToSequence( unsubtractedJetTag+'Jets',
+                       ak4PFJets.clone(rParam = radius, src = 'packedPFCandidates'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'patJetCorrFactors',
+                       patJetCorrFactors.clone(payload = JECTag, src = unsubtractedJetTag+'Jets'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'patJetPartonMatch',
+                       patJetPartonMatch.clone(maxDeltaR = radius,
+                          matched = 'hiSignalGenParticles',
+                          src = unsubtractedJetTag+'Jets'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'patJetGenJetMatch',
+                       patJetGenJetMatch.clone(maxDeltaR = radius,
+                          matched = genjetcollection,
+                          src = unsubtractedJetTag + 'Jets'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'patJetPartonAssociationLegacy',
+                       patJetPartonAssociationLegacy.clone(jets = unsubtractedJetTag + 'Jets'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'patJetFlavourAssociationLegacy',
+                       patJetFlavourAssociationLegacy.clone(srcByReference = unsubtractedJetTag+'patJetPartonAssociationLegacy'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'patJetPartons',
+                       patJetPartons.clone(partonMode = 'Pythia8'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'pfImpactParameterTagInfos',
+                       pfImpactParameterTagInfos.clone(jets = unsubtractedJetTag +'Jets',
+                          candidates = 'packedPFCandidates', primaryVertex = 'offlineSlimmedPrimaryVerticesRecovery'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'pfSecondaryVertexTagInfos',
+                       pfSecondaryVertexTagInfos.clone(trackIPTagInfos = unsubtractedJetTag+'pfImpactParameterTagInfos'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'pfDeepCSVTagInfos',
+                       pfDeepCSVTagInfos.clone(svTagInfos = unsubtractedJetTag+'pfSecondaryVertexTagInfos'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'pfDeepCSVJetTags',
+                       pfDeepCSVJetTags.clone(src = unsubtractedJetTag+'pfDeepCSVTagInfos'),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'pfJetProbabilityBJetTags',
+                       pfJetProbabilityBJetTags.clone(tagInfos = [unsubtractedJetTag+'pfImpactParameterTagInfos']),
+                       process, sequence)
+
+        addToSequence( unsubtractedJetTag+'patJets',
+                       patJets.clone(
+                           JetFlavourInfoSource = unsubtractedJetTag+'patJetFlavourAssociation',
+                           JetPartonMapSource = unsubtractedJetTag+'patJetFlavourAssociationLegacy',
+                           genJetMatch = unsubtractedJetTag+'patJetGenJetMatch',
+                           genPartonMatch = unsubtractedJetTag+'patJetPartonMatch',
+                           jetCorrFactorsSource = cms.VInputTag(unsubtractedJetTag+'patJetCorrFactors'),
+                           jetSource = unsubtractedJetTag+'Jets',
+                           discriminatorSources = cms.VInputTag(cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probb'), cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probc'), cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probudsg'), cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probbb'), cms.InputTag(unsubtractedJetTag+'pfJetProbabilityBJetTags')),
+                           addAssociatedTracks = False,
+                       ),
+                       process, sequence)
+    # And of testing of the implementation for parton flavor identification in MC
+
+    if isMC :
+        addToSequence( tag+'patJetPartonMatch',
+                       patJetPartonMatch.clone(maxDeltaR = radius,
+                       matched = 'hiSignalGenParticles',
+                       src = tag+'Jets'),
+                       process, sequence)
+
+        #genjetcollection = 'ak'+str(radiustag)+'GenJetsNoNu'
+ 
+        #addToSequence( genjetcollection,
+        #               ak4GenJetsNoNu.clone(src = 'packedGenParticlesSignal', rParam = radius),
+        #               process, sequence)
 
         addToSequence( tag+'patJetGenJetMatch',
                        patJetGenJetMatch.clone(maxDeltaR = radius,

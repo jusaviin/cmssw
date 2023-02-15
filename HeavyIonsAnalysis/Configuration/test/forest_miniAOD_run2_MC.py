@@ -136,7 +136,7 @@ process.forest = cms.Path(
 
 addR3Jets = False
 addR3FlowJets = False
-addR4Jets = True
+addR4Jets = False
 addR4FlowJets = True
 
 if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
@@ -176,6 +176,8 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
         process.akFlowPuCs4PFJetAnalyzer.jetTag = 'akCs4PFFlowpatJets'
         process.akFlowPuCs4PFJetAnalyzer.jetName = 'akCs4PFFlow'
+        process.akFlowPuCs4PFJetAnalyzer.matchJets = True
+        process.akFlowPuCs4PFJetAnalyzer.matchTag = 'ak4PFMatchingForakCs4PFFlowpatJets'
         process.forest += process.extraFlowJetsMC * process.jetsR4flow * process.akFlowPuCs4PFJetAnalyzer
 
 
