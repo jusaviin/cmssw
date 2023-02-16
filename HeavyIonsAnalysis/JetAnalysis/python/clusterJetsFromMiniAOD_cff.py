@@ -67,49 +67,30 @@ def setupHeavyIonJets(tag, sequence, process, isMC, radius = -1, JECTag = 'None'
                           src = unsubtractedJetTag + 'Jets'),
                        process, sequence)
 
-        addToSequence( unsubtractedJetTag+'patJetPartonAssociationLegacy',
-                       patJetPartonAssociationLegacy.clone(jets = unsubtractedJetTag + 'Jets'),
-                       process, sequence)
-
-        addToSequence( unsubtractedJetTag+'patJetFlavourAssociationLegacy',
-                       patJetFlavourAssociationLegacy.clone(srcByReference = unsubtractedJetTag+'patJetPartonAssociationLegacy'),
-                       process, sequence)
-
         addToSequence( unsubtractedJetTag+'patJetPartons',
                        patJetPartons.clone(partonMode = 'Pythia8'),
                        process, sequence)
 
-        addToSequence( unsubtractedJetTag+'pfImpactParameterTagInfos',
-                       pfImpactParameterTagInfos.clone(jets = unsubtractedJetTag +'Jets',
-                          candidates = 'packedPFCandidates', primaryVertex = 'offlineSlimmedPrimaryVerticesRecovery'),
-                       process, sequence)
-
-        addToSequence( unsubtractedJetTag+'pfSecondaryVertexTagInfos',
-                       pfSecondaryVertexTagInfos.clone(trackIPTagInfos = unsubtractedJetTag+'pfImpactParameterTagInfos'),
-                       process, sequence)
-
-        addToSequence( unsubtractedJetTag+'pfDeepCSVTagInfos',
-                       pfDeepCSVTagInfos.clone(svTagInfos = unsubtractedJetTag+'pfSecondaryVertexTagInfos'),
-                       process, sequence)
-
-        addToSequence( unsubtractedJetTag+'pfDeepCSVJetTags',
-                       pfDeepCSVJetTags.clone(src = unsubtractedJetTag+'pfDeepCSVTagInfos'),
-                       process, sequence)
-
-        addToSequence( unsubtractedJetTag+'pfJetProbabilityBJetTags',
-                       pfJetProbabilityBJetTags.clone(tagInfos = [unsubtractedJetTag+'pfImpactParameterTagInfos']),
+        addToSequence( unsubtractedJetTag+'patJetFlavourAssociation',
+                       patJetFlavourAssociation.clone(jets = unsubtractedJetTag+'Jets',
+                           bHadrons = cms.InputTag(unsubtractedJetTag+"patJetPartons","bHadrons"),
+                           cHadrons = cms.InputTag(unsubtractedJetTag+"patJetPartons","cHadrons"),
+                           partons = cms.InputTag(unsubtractedJetTag+"patJetPartons","physicsPartons"),
+                           leptons = cms.InputTag(unsubtractedJetTag+"patJetPartons","leptons")),
                        process, sequence)
 
         addToSequence( unsubtractedJetTag+'patJets',
                        patJets.clone(
                            JetFlavourInfoSource = unsubtractedJetTag+'patJetFlavourAssociation',
-                           JetPartonMapSource = unsubtractedJetTag+'patJetFlavourAssociationLegacy',
+                           JetPartonMapSource = unsubtractedJetTag+'patJetFlavourAssociation',
                            genJetMatch = unsubtractedJetTag+'patJetGenJetMatch',
                            genPartonMatch = unsubtractedJetTag+'patJetPartonMatch',
                            jetCorrFactorsSource = cms.VInputTag(unsubtractedJetTag+'patJetCorrFactors'),
                            jetSource = unsubtractedJetTag+'Jets',
-                           discriminatorSources = cms.VInputTag(cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probb'), cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probc'), cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probudsg'), cms.InputTag(unsubtractedJetTag+'pfDeepCSVJetTags','probbb'), cms.InputTag(unsubtractedJetTag+'pfJetProbabilityBJetTags')),
+                           addBTagInfo = False,
+                           addDiscriminators = False,
                            addAssociatedTracks = False,
+                           useLegacyJetMCFlavour = False
                        ),
                        process, sequence)
     # And of testing of the implementation for parton flavor identification in MC
