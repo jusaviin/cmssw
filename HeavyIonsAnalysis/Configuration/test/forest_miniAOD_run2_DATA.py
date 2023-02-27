@@ -155,15 +155,19 @@ addR3FlowJets = False
 addR4Jets = True
 addR4FlowJets = True
 
+# this is only for non-reclustered jets
+addCandidateTagging = False
+
+
 if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
     process.load("HeavyIonsAnalysis.JetAnalysis.extraJets_cff")
     from HeavyIonsAnalysis.JetAnalysis.clusterJetsFromMiniAOD_cff import setupHeavyIonJets
+    process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
 
     if addR3Jets :
         process.jetsR3 = cms.Sequence()
         setupHeavyIonJets('akCs3PF', process.jetsR3, process, isMC = 0, radius = 0.30, JECTag = 'AK3PF', doFlow = False)
         process.akCs3PFpatJetCorrFactors.levels = ['L2Relative', 'L2L3Residual']
-        process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
         process.akCs3PFJetAnalyzer = process.akCs4PFJetAnalyzer.clone(jetTag = "akCs3PFpatJets", jetName = 'akCs3PF')
         process.forest += process.extraJetsData * process.jetsR3 * process.akCs3PFJetAnalyzer
 
@@ -171,7 +175,6 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.jetsR3flow = cms.Sequence()
         setupHeavyIonJets('akCs3PFFlow', process.jetsR3flow, process, isMC = 0, radius = 0.30, JECTag = 'AK3PF', doFlow = True)
         process.akCs3PFFlowpatJetCorrFactors.levels = ['L2Relative', 'L2L3Residual']
-        process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
         process.akFlowPuCs3PFJetAnalyzer = process.akCs4PFJetAnalyzer.clone(jetTag = "akCs3PFFlowpatJets", jetName = 'akCs3PFFlow')
         process.forest += process.extraFlowJetsData * process.jetsR3flow * process.akFlowPuCs3PFJetAnalyzer 
 
@@ -180,7 +183,6 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.jetsR4 = cms.Sequence()
         setupHeavyIonJets('akCs0PF', process.jetsR4, process, isMC = 0, radius = 0.40, JECTag = 'AK4PF', doFlow = False)
         process.akCs0PFpatJetCorrFactors.levels = ['L2Relative', 'L2L3Residual']
-        process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
         process.akCs4PFJetAnalyzer.jetTag = 'akCs0PFpatJets'
         process.akCs4PFJetAnalyzer.jetName = 'akCs0PF'
         process.forest += process.extraJetsData * process.jetsR4 * process.akCs4PFJetAnalyzer
@@ -189,13 +191,10 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.jetsR4flow = cms.Sequence()
         setupHeavyIonJets('akCs4PFFlow', process.jetsR4flow, process, isMC = 0, radius = 0.40, JECTag = 'AK4PF', doFlow = True)
         process.akCs4PFFlowpatJetCorrFactors.levels = ['L2Relative', 'L2L3Residual']
-        process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
         process.akFlowPuCs4PFJetAnalyzer.jetTag = 'akCs4PFFlowpatJets'
         process.akFlowPuCs4PFJetAnalyzer.jetName = 'akCs4PFFlow'
         process.forest += process.extraFlowJetsData * process.jetsR4flow * process.akFlowPuCs4PFJetAnalyzer
 
-# this is only for non-reclustered jets
-addCandidateTagging = False
 
 if addCandidateTagging:
     process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
