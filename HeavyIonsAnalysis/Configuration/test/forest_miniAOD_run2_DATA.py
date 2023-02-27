@@ -42,7 +42,9 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data_promptlike_hi', '')
 process.HiForestInfo.GlobalTagLabel = process.GlobalTag.globaltag
 
-centralityTag = "CentralityTable_HFtowers200_DataPbPb_periHYDJETshape_run2v1031x02_offline"
+# This is the default centrality tag built-in in the miniAOD forest.
+# The tag is given here for reference. Changing it has no effect on your analysis.
+centralityTag = "CentralityTable_HFtowers200_DataPbPb_periHYDJETshape_run2v1033p1x01_offline"
 process.HiForestInfo.info.append(centralityTag)
 
 print('\n')
@@ -50,14 +52,6 @@ print('\033[31m~*~ CENTRALITY TABLE FOR 2018 PBPB DATA ~*~\033[0m')
 print('\033[36m~*~ TAG: ' + centralityTag + ' ~*~\033[0m')
 print('\n')
 process.GlobalTag.snapshotTime = cms.string("9999-12-31 23:59:59.000")
-process.GlobalTag.toGet.extend([
-    cms.PSet(
-        record = cms.string("HeavyIonRcd"),
-        tag = cms.string(centralityTag),
-        label = cms.untracked.string("HFtowers"),
-        connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS"),
-        ),
-    ])
 
 process.GlobalTag.toGet.extend([
     cms.PSet(
@@ -133,12 +127,12 @@ process.zdcanalyzer.calZDCDigi = True
 # main forest sequence
 process.forest = cms.Path(
     process.HiForestInfo +
+    process.hiEvtAnalyzer +
     process.hltanalysis +
-    process.hltobject +
-    process.l1object +
+    #process.hltobject +
+    #process.l1object +
     process.trackSequencePbPb +
     process.particleFlowAnalyser +
-    process.hiEvtAnalyzer +
     process.correctedElectrons +
     process.ggHiNtuplizer +
     process.zdcdigi +
