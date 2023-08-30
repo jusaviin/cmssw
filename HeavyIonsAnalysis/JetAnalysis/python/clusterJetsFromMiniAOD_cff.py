@@ -8,6 +8,10 @@ from RecoBTag.ImpactParameter.pfJetProbabilityBJetTags_cfi import pfJetProbabili
 from RecoBTag.Combined.pfDeepCSVTagInfos_cfi import pfDeepCSVTagInfos
 from RecoBTag.Combined.pfDeepCSVJetTags_cfi import pfDeepCSVJetTags
 
+import FWCore.ParameterSet.Config as cms
+from RecoJets.JetProducers.PFJetParameters_cfi import *
+from RecoJets.JetProducers.AnomalousCellParameters_cfi import *
+
 def get_radius(tag):
     return int("".join(filter(str.isdigit, tag)))
 
@@ -166,8 +170,48 @@ def setupPprefJets(tag, sequence, process, isMC, radius = -1, JECTag = 'None'):
     else:
        radiustag = get_radius(tag)
 
+    PFJetSoftDropParameters = cms.PSet(
+        src            = cms.InputTag('particleFlow'),
+        srcPVs         = cms.InputTag(''),
+        jetType        = cms.string('PFJet'),
+        jetPtMin       = cms.double(5.0),
+        inputEMin      = cms.double(0.0),
+        inputEtMin     = cms.double(0.0),
+        doPVCorrection = cms.bool(False),
+        # pileup with offset correction
+        doPUOffsetCorr = cms.bool(False),
+        # if pileup is false, these are not read:
+        nSigmaPU       = cms.double(1.0),
+        radiusPU       = cms.double(0.5),  
+        # fastjet-style pileup     
+        doAreaFastjet       = cms.bool( True ),
+        doRhoFastjet        = cms.bool( False),
+        doAreaDiskApprox    = cms.bool( False),
+        Active_Area_Repeats = cms.int32(    1),
+        GhostArea           = cms.double(0.01),
+        Ghost_EtaMax        = cms.double( 5.0),
+        Rho_EtaMax          = cms.double( 4.4),
+        voronoiRfact        = cms.double(-0.9),
+        useDeterministicSeed= cms.bool( True ),
+         minSeed             = cms.uint32( 14327 ),
+        applyWeight         = cms.bool( False ),
+        # Soft drop parameters
+        useSoftDrop         = cms.bool( True ),
+        zcut                = cms.double(0.1),
+        beta                = cms.double(0.0),
+        R0                  = cms.double(0.1)
+    )
+
+    ak4PFSoftDropJets = cms.EDProducer(
+        "FastjetJetProducer",
+        PFJetSoftDropParameters,
+        AnomalousCellParameters,
+        jetAlgorithm = cms.string("AntiKt"),
+        rParam       = cms.double(0.4)
+    )
+
     addToSequence( tag+'Jets',
-                   ak4PFJets.clone(rParam = radius, src = 'packedPFCandidates'),
+                   ak4PFSoftDropJets.clone(rParam = radius, src = 'packedPFCandidates'),
                    process, sequence)
 
     if JECTag == 'None':

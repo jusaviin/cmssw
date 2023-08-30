@@ -136,14 +136,14 @@ process.forest = cms.Path(
 
 addR3Jets = False
 addR3FlowJets = False
-addR4Jets = False
-addR4FlowJets = True
-matchJets = True             # Enables q/g and heavy flavor jet identification
+addR4Jets = True
+addR4FlowJets = False
+matchJets = False             # Enables q/g and heavy flavor jet identification
 addCandidateTagging = False
 
 if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
     process.load("HeavyIonsAnalysis.JetAnalysis.extraJets_cff")
-    from HeavyIonsAnalysis.JetAnalysis.clusterJetsFromMiniAOD_cff import setupHeavyIonJets
+    from HeavyIonsAnalysis.JetAnalysis.clusterJetsFromMiniAOD_cff import setupHeavyIonJets, setupPprefJets
     process.load("HeavyIonsAnalysis.JetAnalysis.candidateBtaggingMiniAOD_cff")
 
     if addR3Jets :
@@ -166,11 +166,14 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         # Recluster using an alias "0" in order not to get mixed up with the default AK4 collections
         process.jetsR4 = cms.Sequence()
         jetName = 'akCs0PF'
-        setupHeavyIonJets(jetName, process.jetsR4, process, isMC = 1, radius = 0.40, JECTag = 'AK4PF', doFlow = False, matchJets = matchJets)
+        setupPprefJets(jetName, process.jetsR4, process, isMC = 1, radius = 0.40, JECTag = 'AK4PF')
         process.akCs0PFpatJetCorrFactors.levels = ['L2Relative', 'L3Absolute']
+        #process.akCs0PFJets.useSoftDrop = True
         process.akCs4PFJetAnalyzer.jetTag = jetName + 'patJets'
         process.akCs4PFJetAnalyzer.jetName = jetName
         process.akCs4PFJetAnalyzer.matchJets = matchJets
+        process.akCs4PFJetAnalyzer.doSubJets = True
+        process.akCs4PFJetAnalyzer.doJetConstituents = True
         process.akCs4PFJetAnalyzer.matchTag = 'ak4PFMatchingFor' + jetName + 'patJets'
         process.forest += process.extraJetsMC * process.jetsR4 * process.akCs4PFJetAnalyzer
 
