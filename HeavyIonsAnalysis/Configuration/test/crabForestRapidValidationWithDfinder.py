@@ -27,9 +27,9 @@ config.Data.totalUnits = len(config.Data.userInputFiles)
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 10
-config.Data.outLFNDirBase = '/store/user/' + username + '/run3RapidValidation/' + config.General.requestName
+config.Data.outLFNDirBase = '/store/group/phys_heavyions/' + username + '/run3RapidValidation/' + config.General.requestName
 config.Data.publication = False
 
 config.section_("Site")
 config.Site.whitelist = ['T2_CH_CERN']
-config.Site.storageSite = 'T2_US_Vanderbilt'
+config.Site.storageSite = 'T2_CH_CERN'
