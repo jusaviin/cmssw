@@ -4,7 +4,7 @@ from CRABClient.UserUtilities import getUsername
 config = Configuration()
 
 inputList = 'fileListPhysicsRawPrime0_374289.txt'
-jobTag = "PbPb2023_run374289_HIPhysicsRawPrime0_noDFinder_2023-09-26"
+jobTag = "PbPb2023_run374289_HIPhysicsRawPrime0_withDFinder_2023-09-26"
 username = getUsername()
 
 config.section_("General")
@@ -15,7 +15,7 @@ config.General.transferLogs = False
 
 config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'forest_miniAOD_run3_DATA.py'
+config.JobType.psetName = 'forest_miniAOD_run3_DATA_wDfinder.py'
 config.JobType.maxMemoryMB = 2200
 config.JobType.maxJobRuntimeMin = 600
 config.JobType.allowUndistributedCMSSW = True
