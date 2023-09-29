@@ -3,8 +3,8 @@ from CRABClient.UserUtilities import getUsername
 
 config = Configuration()
 
-inputList = 'fileListHIPhysicsRawPrime0_374354.txt'
-jobTag = "PbPb2023_run374354_HIPhysicsRawPrime0_withDFinder_noEmap_2023-09-28"
+inputList = 'fileListHIExpressRawPrime0_374354.txt'
+jobTag = "PbPb2023_run374354_HIExpressRawPrime_withDFinder_noEmap_2023-09-28"
 username = getUsername()
 
 config.section_("General")
