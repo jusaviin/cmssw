@@ -335,7 +335,7 @@ process.dfinder = cms.Path(process.DfinderSequence)
 import FWCore.ParameterSet.VarParsing as VarParsing
 ivars = VarParsing.VarParsing('analysis')
 
-ivars.maxEvents = -1
+ivars.maxEvents = 25
 ivars.outputFile='HiForestMINIAOD.root'
 ivars.inputFiles='file:/eos/cms/store/group/phys_heavyions_ops/abaty/RAWPrimeChecks2023/RAWPrime/RAWPrime_Streamer_2.root'
 ivars.parseArguments() # get and parse the command line arguments

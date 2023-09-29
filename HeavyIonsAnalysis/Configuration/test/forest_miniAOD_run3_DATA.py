@@ -25,7 +25,8 @@ process.HiForestInfo.info = cms.vstring("HiForest, miniAOD, 132X, data")
 process.source = cms.Source("PoolSource",
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
     fileNames = cms.untracked.vstring(
-        'root://eoscms.cern.ch//store/group/phys_heavyions/wangj/RECO2023/miniaod_HIExpress_374354/reco_run374354_ls0050_streamHIExpress_StorageManager.root'
+        #'root://eoscms.cern.ch//store/group/phys_heavyions/wangj/RECO2023/miniaod_HIExpress_374354/reco_run374354_ls0050_streamHIExpress_StorageManager.root'
+        'root://eoscms.cern.ch//store/group/phys_heavyions/wangj/RECO2023/miniaod_PhysicsHIForward0_374354/reco_run374354_ls0006_streamPhysicsHIForward0_StorageManager.root'
     ), 
 )
 

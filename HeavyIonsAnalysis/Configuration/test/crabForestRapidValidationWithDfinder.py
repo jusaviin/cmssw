@@ -18,6 +18,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'forest_miniAOD_run3_DATA_wDfinder.py'
 config.JobType.maxMemoryMB = 2500
 config.JobType.maxJobRuntimeMin = 600
+config.JobType.inputFiles = ['emap_2023_newZDC_v3.txt']
 config.JobType.allowUndistributedCMSSW = True
 
 config.section_("Data")
