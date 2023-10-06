@@ -4,7 +4,7 @@ from CRABClient.UserUtilities import getUsername
 config = Configuration()
 
 inputList = 'fileList_HIPhysicsRawPrime2_374719.txt'
-jobTag = "PbPb2023_run374719_HIPhysicsRawPrime2_2023-10-06"
+jobTag = "PbPb2023_run374719_HIPhysicsRawPrime2_quickForest_2023-10-06"
 #jobTag = "HIPhysicsRawPrime0_HIRun2023A-PromptReco-v1_run374322_2023-09-30"
 username = getUsername()
 
@@ -18,7 +18,7 @@ config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'forest_miniAOD_run3_DATA.py'
 config.JobType.maxMemoryMB = 2500
-config.JobType.maxJobRuntimeMin = 1440
+config.JobType.maxJobRuntimeMin = 180
 config.JobType.scriptExe = 'submitScript.sh'
 config.JobType.inputFiles = ['emap_2023_newZDC_v3.txt','CentralityTable_HFtowers200_DataPbPb_periHYDJETshape_run3v1302x04_offline_374289.db']
 config.JobType.allowUndistributedCMSSW = True
@@ -29,7 +29,7 @@ config.Data.totalUnits = len(config.Data.userInputFiles)
 #config.Data.inputDataset = '/Alternatively/DefineDataset/InsteadOf/InputFileList'
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 2
+config.Data.unitsPerJob = 4
 config.Data.outLFNDirBase = '/store/group/phys_heavyions/' + username + '/run3RapidValidation/' + config.General.requestName
 config.Data.publication = False
 
