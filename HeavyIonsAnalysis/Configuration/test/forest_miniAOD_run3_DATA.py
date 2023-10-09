@@ -166,17 +166,17 @@ process.forest = cms.Path(
     process.centralityBin +
     process.hiEvtAnalyzer +
     process.hltanalysis +
-    #process.hltobject +
-    #process.l1object +
-    #process.trackSequencePbPb +
+    process.hltobject +
+    process.l1object +
+    process.trackSequencePbPb +
     #process.particleFlowAnalyser +
-    #process.ggHiNtuplizer +
+    process.ggHiNtuplizer +
     #process.zdcdigi +
     #process.QWzdcreco +
-    process.zdcanalyzer #+
-    #process.unpackedMuons +
-    #process.muonAnalyzer +
-    #process.akPu4CaloJetAnalyzer
+    process.zdcanalyzer +
+    process.unpackedMuons +
+    process.muonAnalyzer +
+    process.akPu4CaloJetAnalyzer
     )
 
 #customisation
@@ -184,9 +184,9 @@ process.forest = cms.Path(
 # Select the types of jets filled
 addR3Jets = False
 addR3FlowJets = False
-addR4Jets = False
-addR4FlowJets = False
-addUnsubtractedR4Jets = False
+addR4Jets = True
+addR4FlowJets = True
+addUnsubtractedR4Jets = True
 
 # Choose which additional information is added to jet trees
 doHIJetID = True             # Fill jet ID and composition information branches
