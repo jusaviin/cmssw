@@ -116,6 +116,7 @@ process.akPu4CaloJetAnalyzer.doHiJetID = True
 ################################
 # tracks
 process.load("HeavyIonsAnalysis.TrackAnalysis.TrackAnalyzers_cff")
+process.PbPbTracks.trackPtMin = 5
 # muons (FTW)
 process.load("HeavyIonsAnalysis.MuonAnalysis.unpackedMuons_cfi")
 process.load("HeavyIonsAnalysis.MuonAnalysis.muonAnalyzer_cfi")
@@ -168,7 +169,7 @@ process.forest = cms.Path(
     process.centralityBin +
     process.hiEvtAnalyzer +
     process.hltanalysis +
-    process.hltobject +
+    #process.hltobject +
     process.l1object +
     process.trackSequencePbPb +
     process.particleFlowAnalyser +
@@ -176,8 +177,8 @@ process.forest = cms.Path(
     #process.zdcdigi +
     #process.QWzdcreco +
     process.zdcanalyzer +
-    process.unpackedMuons +
-    process.muonAnalyzer +
+    #process.unpackedMuons +
+    #process.muonAnalyzer +
     process.akPu4CaloJetAnalyzer
     )
 
@@ -187,8 +188,8 @@ process.forest = cms.Path(
 addR3Jets = False
 addR3FlowJets = False
 addR4Jets = True
-addR4FlowJets = True
-addUnsubtractedR4Jets = True
+addR4FlowJets = False
+addUnsubtractedR4Jets = False
 
 # Choose which additional information is added to jet trees
 doHIJetID = True             # Fill jet ID and composition information branches
