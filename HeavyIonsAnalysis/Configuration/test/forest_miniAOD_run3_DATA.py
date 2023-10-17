@@ -25,7 +25,8 @@ process.HiForestInfo.info = cms.vstring("HiForest, miniAOD, 132X, data")
 process.source = cms.Source("PoolSource",
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
     fileNames = cms.untracked.vstring(
-        'root://eoscms.cern.ch//store/group/phys_heavyions/wangj/RECO2023/miniaod_PhysicsHIForward0_374596/reco_run374596_ls0274_streamPhysicsHIForward0_StorageManager.root'
+        'root://eoscms.cern.ch//store/group/phys_heavyions/wangj/RECO2023/miniaod_PhysicsHIPhysicsRawPrime0_374810/reco_run374810_ls0150_streamPhysicsHIPhysicsRawPrime0_StorageManager.root'
+        #'root://eoscms.cern.ch//store/group/phys_heavyions/wangj/RECO2023/miniaod_PhysicsHIForward0_374596/reco_run374596_ls0274_streamPhysicsHIForward0_StorageManager.root'
     ), 
 )
 
@@ -101,6 +102,7 @@ from HeavyIonsAnalysis.EventAnalysis.hltobject_cfi import trigger_list_data_2023
 process.hltobject.triggerNames = trigger_list_data_2023_skimmed
 
 process.load('HeavyIonsAnalysis.EventAnalysis.particleFlowAnalyser_cfi')
+
 ################################
 # electrons, photons, muons
 process.load('HeavyIonsAnalysis.EGMAnalysis.ggHiNtuplizer_cfi')
@@ -169,7 +171,7 @@ process.forest = cms.Path(
     process.hltobject +
     process.l1object +
     process.trackSequencePbPb +
-    #process.particleFlowAnalyser +
+    process.particleFlowAnalyser +
     process.ggHiNtuplizer +
     #process.zdcdigi +
     #process.QWzdcreco +

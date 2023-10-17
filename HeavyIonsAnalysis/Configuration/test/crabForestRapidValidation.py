@@ -3,9 +3,9 @@ from CRABClient.UserUtilities import getUsername
 
 config = Configuration()
 
-inputList = 'fileList_HIPhysicsRawPrime_HIRun2023A-PromptReco-v2_run374730.txt'
-#jobTag = "PbPb2023_run374719_HIPhysicsRawPrime2_quickForest_2023-10-06"
-jobTag = "HIPhysicsRawPrime0-31_HIRun2023A-PromptReco-v2_run374730_2023-10-09"
+inputList = 'fileList_HIPhysicsRawPrime0_374810.txt'
+jobTag = "PbPb2023_run374810_HIPhysicsRawPrime0_2023-10-16"
+#jobTag = "HIPhysicsRawPrime0-31_HIRun2023A-PromptReco-v2_run374810_jetSkim_2023-10-14"
 username = getUsername()
 
 config.section_("General")
@@ -34,5 +34,5 @@ config.Data.outLFNDirBase = '/store/group/phys_heavyions/' + username + '/run3Ra
 config.Data.publication = False
 
 config.section_("Site")
-config.Site.whitelist = ['T2_US_Vanderbilt']
+config.Site.whitelist = ['T2_CH_CERN']
 config.Site.storageSite = 'T2_CH_CERN'
