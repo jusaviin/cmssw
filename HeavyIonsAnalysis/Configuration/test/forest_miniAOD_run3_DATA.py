@@ -169,7 +169,7 @@ process.forest = cms.Path(
     process.centralityBin +
     process.hiEvtAnalyzer +
     process.hltanalysis +
-    #process.hltobject +
+    process.hltobject +
     process.l1object +
     process.trackSequencePbPb +
     process.particleFlowAnalyser +

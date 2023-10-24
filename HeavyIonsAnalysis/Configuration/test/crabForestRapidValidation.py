@@ -3,9 +3,9 @@ from CRABClient.UserUtilities import getUsername
 
 config = Configuration()
 
-inputList = 'fileList_HIPhysicsRawPrime_HIRun2023A-PromptReco-v2_run374925.txt'
+inputList = 'fileList_HIPhysicsRawPrime_HIRun2023A-PromptReco-v2_run375259.txt'
 #jobTag = "PbPb2023_run374810_HIPhysicsRawPrime0_2023-10-16"
-jobTag = "HIPhysicsRawPrime0-31_HIRun2023A-PromptReco-v2_run374925_jetSkim_2023-10-17"
+jobTag = "HIPhysicsRawPrime0-31_HIRun2023A-PromptReco-v2_run375259_2023-10-24"
 username = getUsername()
 
 config.section_("General")
