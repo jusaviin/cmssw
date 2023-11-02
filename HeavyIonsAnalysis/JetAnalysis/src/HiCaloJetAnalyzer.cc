@@ -179,7 +179,6 @@ void HiCaloJetAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup) {
   jets_.nref = 0;
 
   for (unsigned int j = 0; j < jets->size(); ++j) {
-    //const pat::Jet& jet = (*jets)[j];
     const reco::CaloJet& jet = (*jets)[j];
 
     auto pt = jet.pt();
