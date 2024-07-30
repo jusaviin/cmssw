@@ -72,6 +72,7 @@ from RecoHI.HiJetAlgos.hiFJRhoProducer import hiFJRhoProducer
 
 import RecoHI.HiJetAlgos.hiFJRhoFlowModulationProducer_cfi as _mod
 hiFJRhoFlowModulation = _mod.hiFJRhoFlowModulationProducer.clone()
+hiFJRhoFlowModulationIteration = _mod.hiFJRhoFlowModulationProducer.clone()
 
 import RecoHI.HiJetAlgos.hiPuRhoProducer_cfi as _mod
 hiPuRho = _mod.hiPuRhoProducer.clone()
@@ -89,6 +90,8 @@ akCs4PFJets = cms.EDProducer(
     csAlpha   = cms.double(2.),
     writeJetsWithConst = cms.bool(True),
     useModulatedRho = cms.bool(False),
+    minFlowChi2Prob = cms.double(0.05),
+    maxFlowChi2Prob = cms.double(0.95),
     rhoFlowFitParams = cms.InputTag('hiFJRhoFlowModulation', 'rhoFlowFitParams'),
     jetCollInstanceName = cms.string("pfParticlesCs"),
 )
@@ -97,6 +100,12 @@ akCs4PFJets.doAreaFastjet     = True
 akCs4PFJets.jetPtMin          = 0.0
 akCs4PFJets.useExplicitGhosts = cms.bool(True)
 akCs4PFJets.GhostArea         = 0.005
+
+# Jet collection for iteratively excluding jetty regions from flow modulation
+akCs4PFJetsForFlow = akCs4PFJets.clone(
+    useModulatedRho = cms.bool(True),
+    rhoFlowFitParams = cms.InputTag('hiFJRhoFlowModulationIteration', 'rhoFlowFitParams')
+)
 
 akCs3PFJets = akCs4PFJets.clone(rParam = 0.3)
 

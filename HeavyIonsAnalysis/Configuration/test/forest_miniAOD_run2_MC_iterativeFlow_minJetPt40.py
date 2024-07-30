@@ -200,7 +200,7 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.hiFJRhoFlowModulation.evtPlaneLevel = 0 # Event plane level parameter in case the event plane is read from the forest
 
         # Excluding jetty regions from the flow fit
-        iterativeFlowModulation = False # Iterative jetty region exclusion for flow modulation
+        iterativeFlowModulation = True # Iterative jetty region exclusion for flow modulation
 
         # If we are doing iterative jetty region exclusion, we must exclude jetty regions
         process.hiFJRhoFlowModulation.doJettyExclusion = False
@@ -233,7 +233,7 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
 
             # Configure CS subtracted jets for jetty region subtraction
             process.akCs4PFJetsForFlow.src = "packedPFCandidates" # Packed candidates as a source for jets for flow subtraction in second iteration
-            process.akCs4PFJetsForFlow.jetPtMin = 20 # Minimum jet pT to exclude area around it in second iteration
+            process.akCs4PFJetsForFlow.jetPtMin = 40 # Minimum jet pT to exclude area around it in second iteration
             process.akCs4PFJetsForFlow.rhoFlowFitParams = cms.InputTag('hiFJRhoFlowModulationIteration', 'rhoFlowFitParams') # Minimum jet pT to exclude area around it in second iteration
 
             # Configure the second iteration of the flow modulation to use CS subtracted jets as the jet collection

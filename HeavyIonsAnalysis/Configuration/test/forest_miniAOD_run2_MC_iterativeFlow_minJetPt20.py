@@ -200,7 +200,7 @@ if addR3Jets or addR3FlowJets or addR4Jets or addR4FlowJets :
         process.hiFJRhoFlowModulation.evtPlaneLevel = 0 # Event plane level parameter in case the event plane is read from the forest
 
         # Excluding jetty regions from the flow fit
-        iterativeFlowModulation = False # Iterative jetty region exclusion for flow modulation
+        iterativeFlowModulation = True # Iterative jetty region exclusion for flow modulation
 
         # If we are doing iterative jetty region exclusion, we must exclude jetty regions
         process.hiFJRhoFlowModulation.doJettyExclusion = False
