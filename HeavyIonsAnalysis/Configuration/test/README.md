@@ -21,7 +21,7 @@ jetTag | "ak4PFJetsForFlow" | Name of the jet collection that gives the jets use
 lastFittedVn | 3 | Last vn component that is included in the flow fit
 minPfCandidatesPerEvent | 100 | Minimum number of particle flow candidates in the event such that flow fit is attempted. If there are less particle flow candidates than this number, no flow modulation is done
 pfCandSource | "packedPFCandidates" | Name of the collection from which particle flow candiadtes are obtained.
-pfCandidateEtaCut | 1.0 | Maximum eta value for particle flow candidates which are indluded in the flow fit
+pfCandidateEtaCut | 1.0 | Maximum eta value for particle flow candidates which are included in the flow fit
 pfCandidateMaxPtCut | 3.0 | Maximum pT value for particle flow candidates which are included in the flow fit
 pfCandidateMinPtCut | 0.3 | Minimum pT value for particle flow candidates which are included in the flow fit
 
