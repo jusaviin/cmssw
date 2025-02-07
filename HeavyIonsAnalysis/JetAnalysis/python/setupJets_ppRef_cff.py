@@ -107,8 +107,8 @@ def candidateBtaggingMiniAOD(process, isMC = True, jetPtMin = 15, jetCorrLevels 
 
     matchedGenJets = ""
     if isMC:
-        # Use reclustered jets without neutrinos for matching. slimmedGenJets can be used after the fix in miniAOD step is propagated here for labelR = 0.ZZ
-        matchedGenJets = "ak"+labelR+"GenJetsReclusterNoNu"
+        if labelR == "0": matchedGenJets = "slimmedGenJets"
+        else: matchedGenJets = "ak"+labelR+"GenJetsReclusterNoNu"
 
 
     svSource = cms.InputTag("slimmedSecondaryVertices")
