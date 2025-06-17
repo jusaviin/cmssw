@@ -23,7 +23,8 @@ process.source = cms.Source("PoolSource",
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
     fileNames = cms.untracked.vstring(
         #'/store/data/Run2023F/PPRefHardProbes0/MINIAOD/PromptReco-v1/000/373/710/00000/66888766-f4a9-4d70-bcdf-7bcda26902d7.root'
-        '/store/data/Run2017G/LowEGJet/MINIAOD/UL2017_MiniAODv2-v2/2810000/01869167-7867-434D-A952-5BEC77B73ABA.root'
+        #'/store/data/Run2017G/LowEGJet/MINIAOD/UL2017_MiniAODv2-v2/2810000/01869167-7867-434D-A952-5BEC77B73ABA.root'
+        'root://xrootd-cms.infn.it//store/data/Run2017G/HighEGJet/MINIAOD/UL2017_MiniAODv2-v2/50000/FAF2EAD1-052A-0E42-9CF2-27020300C132.root'
     )
 )
 
@@ -108,6 +109,7 @@ process.load('HeavyIonsAnalysis.EventAnalysis.skimanalysis_cfi')
 # Track Analyzer
 #########################
 process.load('HeavyIonsAnalysis.TrackAnalysis.TrackAnalyzers_cff')
+process.ppTracks.trackPtMin = 0.7
 
 #####################################################################################
 
@@ -131,8 +133,8 @@ process.forest = cms.Path(
     process.hltanalysis *
     process.hiEvtAnalyzer *
 #    process.hltobject +
-    process.l1object +
-    process.ggHiNtuplizer +
+#    process.l1object +
+#    process.ggHiNtuplizer +
     process.trackSequencePP
 )
 
@@ -147,21 +149,30 @@ process.primaryVertexFilter = cms.EDFilter("VertexSelector",
 )
 process.pprimaryVertexFilter = cms.Path(process.primaryVertexFilter)
 
+process.load("HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cff")
+process.pVertexFilterCutG = cms.Path(process.pileupVertexFilterCutG)
+process.pVertexFilterCutGloose = cms.Path(process.pileupVertexFilterCutGloose)
+process.pVertexFilterCutGtight = cms.Path(process.pileupVertexFilterCutGtight)
+process.pVertexFilterCutGplus = cms.Path(process.pileupVertexFilterCutGplus)
+process.pVertexFilterCutE = cms.Path(process.pileupVertexFilterCutE)
+process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
+process.pVertexFilterCutGplusUpsPP = cms.Path(process.pileupVertexFilterCutGplusUpsPP)
+
 
 #####################################################################################
 # Select the types of jets filled
 matchJets = True             # Enables q/g and heavy flavor jet identification in MC
-jetPtMin = 15
-jetAbsEtaMax = 2.5
+jetPtMin = 25
+jetAbsEtaMax = 2.0
 
 # Choose which additional information is added to jet trees
 doHIJetID = True             # Fill jet ID and composition information branches
-doWTARecluster = False        # Add jet phi and eta for WTA axis
+doWTARecluster = True        # Add jet phi and eta for WTA axis
 doBtagging  =  False         # Note that setting to True increases computing time a lot
 
 # 0 means use original mini-AOD jets, otherwise use R value, e.g., 3,4,8
 # Add all the values you want to process to the list
-jetLabels = ["0"]
+jetLabels = ["0","4"]
 
 # add candidate tagging for all selected jet radii
 from HeavyIonsAnalysis.JetAnalysis.setupJets_ppRef_cff import candidateBtaggingMiniAOD

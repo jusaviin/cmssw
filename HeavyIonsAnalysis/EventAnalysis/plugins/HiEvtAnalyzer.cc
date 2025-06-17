@@ -71,6 +71,7 @@ private:
   bool doEvtPlane_;
   bool doEvtPlaneFlat_;
   bool doCentrality_;
+  bool doHFwithPF_;
 
   bool doMC_;
   bool doHiMC_;
@@ -166,6 +167,7 @@ HiEvtAnalyzer::HiEvtAnalyzer(const edm::ParameterSet& iConfig)
       doEvtPlane_(iConfig.getParameter<bool>("doEvtPlane")),
       doEvtPlaneFlat_(iConfig.getParameter<bool>("doEvtPlaneFlat")),
       doCentrality_(iConfig.getParameter<bool>("doCentrality")),
+      doHFwithPF_(iConfig.getParameter<bool>("doHFwithPF")),
       doMC_(iConfig.getParameter<bool>("doMC")),
       doHiMC_(iConfig.getParameter<bool>("doHiMC")),
       doHFfilters_(iConfig.getParameter<bool>("doHFfilters")),
@@ -313,6 +315,10 @@ void HiEvtAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     hiEE = centrality->EtEESum();
     hiEB = centrality->EtEBSum();
     hiET = centrality->EtMidRapiditySum();
+
+  }
+
+  if(doHFwithPF_){
     
     edm::Handle<pat::PackedCandidateCollection> pfCandidates;
     iEvent.getByToken(pfCandidateTag_, pfCandidates);
